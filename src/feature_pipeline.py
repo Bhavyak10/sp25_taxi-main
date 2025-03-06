@@ -67,3 +67,4 @@ logger.info("Feature group ready.")
 logger.info("Inserting data into the feature group...")
 feature_group.insert(ts_data, write_options={"wait_for_job": False})
 logger.info("Data insertion completed.")
+

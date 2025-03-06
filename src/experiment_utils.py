@@ -1,6 +1,5 @@
 import logging
 import os
-
 import mlflow
 from mlflow.models import infer_signature
 
@@ -8,17 +7,19 @@ from mlflow.models import infer_signature
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def set_mlflow_tracking():
     """
     Set up MLflow tracking server credentials and URI.
     """
-    uri = os.environ["MLFLOW_TRACKING_URI"]
+    uri = os.environ.get("MLFLOW_TRACKING_URI")
+    if not uri:
+        logger.error("MLFLOW_TRACKING_URI environment variable is not set.")
+        raise ValueError("MLFLOW_TRACKING_URI environment variable is not set.")
+    
     mlflow.set_tracking_uri(uri)
-    logger.info("MLflow tracking URI and credentials set.")
+    logger.info(f"MLflow tracking URI set to: {uri}")
 
     return mlflow
-
 
 def log_model_to_mlflow(
     model,
